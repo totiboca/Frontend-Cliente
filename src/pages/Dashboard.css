@@ -1,0 +1,203 @@
+.dashboard-container {
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0A1931;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.logout-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background-color: darkred;
+}
+
+.error-message {
+    color: red;
+}
+
+.movimientos-container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #0A1931;
+    color: white;
+}
+
+.dashboard-container {
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-header {
+    background-color: #0A1931;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.movimientos-container {
+    margin-top: 20px;
+}
+
+h3 {
+    margin-top: 30px;
+    color: #0A1931;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #0A1931;
+    color: white;
+}
+
+.totales-ruta {
+    background-color: #E0E0E0;
+    font-weight: bold;
+}
+
+.resumen-total {
+    margin-top: 30px;
+}
+
+.resumen-total table {
+    background-color: #0A1931;
+    color: white;
+}
+
+.resumen-total th, .resumen-total td {
+    border: 1px solid white;
+    padding: 10px;
+}
+
+.filtros-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filtros-container label {
+    font-weight: bold;
+    color: #0A1931;
+}
+
+.filtros-container select,
+.filtros-container input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.totales-ruta {
+    background-color: #E0E0E0;
+    font-weight: bold;
+}
+
+.resumen-total {
+    margin-top: 30px;
+}
+
+.resumen-total table {
+    background-color: #0A1931;
+    color: white;
+}
+
+.resumen-total th, .resumen-total td {
+    border: 1px solid white;
+    padding: 10px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0A1931;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-logout {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-change {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-logout:hover {
+    background-color: darkred;
+}
+
+.btn-change:hover {
+    background-color: #0056b3;
+}
+
+
+h2 {
+    color: white;
+  }
+  

@@ -1,0 +1,149 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h2, h3 {
+    color: #003366; /* Azul Marino */
+    margin-bottom: 10px;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #003366; /* Azul Marino */
+    color: white; /* Letras Blancas */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Elimina los bordes rojos de la tabla de resultados */
+th, td {
+    padding: 12px;
+    border: 2px solid red; /* Borde gris claro en vez de rojo */
+    text-align: center;
+}
+
+th {
+    background-color: #001f4d; /* Azul Marino más oscuro */
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #002b5c; /* Azul intermedio */
+}
+
+tr:last-child {
+    font-weight: bold;
+    background-color: #001b3a; /* Azul más oscuro */
+}
+
+/* Ajustes en el resumen total */
+#resumen-total {
+    background-color: #003366 !important; /* Azul Marino */
+    color: white !important; /* Letras Blancas */
+    font-weight: bold;
+}
+
+#resumen-total th, #resumen-total td {
+    background-color: #003366 !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+/* Inputs y botones */
+input, select {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 2px solid #ff3b3b; /* Bordes en rojo */
+    background-color: white;
+    color: black;
+    font-size: 14px;
+}
+
+label {
+    font-weight: bold;
+    color: #003366;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #ff3b3b; /* Botón rojo */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #cc0000; /* Rojo más oscuro */
+}
+
+/* Ajuste para la fila "Total Ruta" */
+.total-ruta {
+    background-color: #001f4d !important; /* Azul Marino más oscuro */
+    color: white !important; /* Letras Blancas */
+    font-weight: bold;
+}
+
+/* Contenedor de la pantalla de login */
+.login-container {
+    background-color: #003366; /* Azul Marino */
+    padding: 40px;
+    width: 350px;
+    margin: 100px auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+}
+
+/* Estilos para el formulario */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form input {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 2px solid #ff3b3b; /* Borde rojo */
+    font-size: 16px;
+    text-align: center;
+}
+
+.login-form button {
+    padding: 10px;
+    background-color: #ff3b3b; /* Botón rojo */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.login-form button:hover {
+    background-color: #cc0000; /* Rojo más oscuro */
+}
+
+/* Mensajes de error */
+.error {
+    color: #ffcccb;
+    font-weight: bold;
+}
+
+/* Texto para alternar entre login y registro */
+.toggle {
+    cursor: pointer;
+    color: #ffcccb;
+    text-decoration: underline;
+    margin-top: 10px;
+}
