@@ -41,7 +41,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchMovimientos = async () => {
             try {
-                const response = await API.get("api/clientes/movimientos", {
+                const response = await API.get("/clientes/movimientos", {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                 });
                 console.log("Response:", response);
