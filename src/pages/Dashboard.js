@@ -44,6 +44,7 @@ const Dashboard = () => {
                 const response = await API.get("/clientes/movimientos", {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                 });
+                console.log("Datos de movimientos:", response.data?.movimientos);
                 setMovimientos(response.data?.movimientos || {});
             } catch (err) {
                 setError("Error al obtener datos");
