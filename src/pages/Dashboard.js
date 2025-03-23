@@ -62,6 +62,7 @@ const Dashboard = () => {
     };
 
     const filtrarMovimientos = (movimientos) => {
+        if (!movimientos) return {};
         return Object.keys(movimientos)
             .filter((ruta) => filtroRuta === "Todas" || ruta === filtroRuta)
             .reduce((filtered, ruta) => {
@@ -95,8 +96,8 @@ const Dashboard = () => {
             }, {});
     };
 
-    const rutasDisponibles = Object.keys(movimientos);
-
+    // const rutasDisponibles = Object.keys(movimientos);
+    const rutasDisponibles = Object.keys(movimientos || {});
     return (
         <div className="dashboard-container">
             {/* Encabezado con Menú de Usuario */}
@@ -120,7 +121,7 @@ const Dashboard = () => {
             {/* Filtros */}
             <div className="filtros-container">
                 <label>
-                    Filtrar por ruta:
+                    Rutas:
                     <select value={filtroRuta} onChange={(e) => setFiltroRuta(e.target.value)}>
                         <option value="Todas">Todas</option>
                         {rutasDisponibles.map((ruta) => (

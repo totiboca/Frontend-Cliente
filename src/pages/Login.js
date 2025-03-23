@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import API from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import "../styles.css"; // Asegúrate de que los estilos están importados
+import bimboLogo from "../assets/bimbo.webp"; // <-- Ruta a tu imagen
+
 
 const Login = () => {
     const navigate = useNavigate();
@@ -42,6 +44,7 @@ const Login = () => {
 
     return (
         <div className="login-container">
+              <img src={bimboLogo} alt="Bimbo Logo" className="bimbo-logo" />
             <h2>{registro ? "Registro de Usuario" : "Inicio de Sesión"}</h2>
             {error && <p className="error">{error}</p>}
             <form onSubmit={registro ? handleRegistro : handleLogin} className="login-form">

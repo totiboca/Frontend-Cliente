@@ -1,5 +1,6 @@
+/* Estilos base – mantén lo que ya tenías */
 .dashboard-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: auto;
     text-align: center;
     padding: 20px;
@@ -16,7 +17,12 @@
     border-radius: 5px;
 }
 
-.logout-button {
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-logout {
     background-color: red;
     color: white;
     border: none;
@@ -25,8 +31,21 @@
     border-radius: 5px;
 }
 
-.logout-button:hover {
+.btn-change {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-logout:hover {
     background-color: darkred;
+}
+
+.btn-change:hover {
+    background-color: #0056b3;
 }
 
 .error-message {
@@ -35,49 +54,6 @@
 
 .movimientos-container {
     margin-top: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background: white;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-th {
-    background-color: #0A1931;
-    color: white;
-}
-
-.dashboard-container {
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-
-.dashboard-header {
-    background-color: #0A1931;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.movimientos-container {
-    margin-top: 20px;
-}
-
-h3 {
-    margin-top: 30px;
-    color: #0A1931;
 }
 
 table {
@@ -136,68 +112,110 @@ th {
     border: 1px solid #ddd;
 }
 
-.totales-ruta {
-    background-color: #E0E0E0;
-    font-weight: bold;
+/* ===================== */
+/* Estilos para dispositivos móviles (máximo 768px) */
+@media (max-width: 768px) {
+    .dashboard-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+    
+    .header-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 5px;
+        margin-top: 10px;
+    }
+    
+    .menu-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+    }
+    
+    .dropdown-menu {
+        width: 100%;
+        text-align: left;
+        margin-top: 5px;
+    }
+    
+    .filtros-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .filtros-container label {
+        width: 100%;
+        text-align: left;
+    }
+    
+    table {
+        font-size: 0.8rem;
+    }
+    
+    th, td {
+        padding: 5px;
+    }
+    
+    .resumen-total th, 
+    .resumen-total td {
+        padding: 5px;
+    }
 }
 
-.resumen-total {
-    margin-top: 30px;
+/* ===================== */
+/* Estilos para dispositivos muy pequeños (máximo 368px) */
+@media (max-width: 368px) {
+    .dashboard-container {
+        padding: 5px;
+    }
+    
+    .dashboard-header {
+        padding: 5px;
+        font-size: 0.9rem;
+    }
+    
+    .header-buttons {
+        gap: 5px;
+    }
+    
+    .btn-logout,
+    .btn-change {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .filtros-container {
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .filtros-container label,
+    .filtros-container select,
+    .filtros-container input {
+        font-size: 0.8rem;
+    }
+    
+    table {
+        font-size: 0.7rem;
+    }
+    
+    th, td {
+        padding: 3px;
+    }
+    
+    .resumen-total th,
+    .resumen-total td {
+        padding: 3px;
+        font-size: 0.7rem;
+    }
 }
-
-.resumen-total table {
-    background-color: #0A1931;
-    color: white;
-}
-
-.resumen-total th, .resumen-total td {
-    border: 1px solid white;
-    padding: 10px;
-}
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0A1931;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-}
-
-.header-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.btn-logout {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.btn-change {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.btn-logout:hover {
-    background-color: darkred;
-}
-
-.btn-change:hover {
-    background-color: #0056b3;
-}
-
-
-h2 {
-    color: white;
-  }
-  

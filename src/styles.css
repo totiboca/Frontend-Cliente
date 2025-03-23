@@ -7,7 +7,7 @@ body {
 }
 
 h2, h3 {
-    color: #003366; /* Azul Marino */
+    color: #fbfbfb; /* Azul Marino */
     margin-bottom: 10px;
 }
 
@@ -68,6 +68,7 @@ input, select {
 label {
     font-weight: bold;
     color: #003366;
+    /* color:white; */
 }
 
 button {
@@ -93,16 +94,6 @@ button:hover {
 }
 
 /* Contenedor de la pantalla de login */
-.login-container {
-    background-color: #003366; /* Azul Marino */
-    padding: 40px;
-    width: 350px;
-    margin: 100px auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    color: white;
-}
 
 /* Estilos para el formulario */
 .login-form {
@@ -147,3 +138,34 @@ button:hover {
     text-decoration: underline;
     margin-top: 10px;
 }
+
+
+.bimbo-logo {
+    width: 220px;       /* Ajusta el tamaño que quieras */
+    margin-bottom: 20px; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Para centrarla si el contenedor es más ancho */
+  }
+
+  .login-container {
+    background-color: #0A1931; /* Tu color azul */
+    width: 350px;             /* o el ancho que quieras */
+    margin: 50px auto;        /* para centrar todo */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+    color: white;
+  }
+  
+  /* .login-container {
+    background-color: #003366; /* Azul Marino */
+    /* padding: 40px;
+    width: 350px;
+    margin: 100px auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+} */ 
