@@ -1,4 +1,4 @@
-/* Estilos base – mantén lo que ya tenías */
+/* Estilos base */
 .dashboard-container {
     max-width: 1000px;
     margin: auto;
@@ -17,35 +17,42 @@
     border-radius: 5px;
 }
 
-.header-buttons {
-    display: flex;
-    gap: 10px;
+/* Menú de usuario */
+.menu-container {
+    position: relative;
 }
 
-.btn-logout {
-    background-color: red;
+.menu-button {
+    background-color: #0A1931;
     color: white;
-    border: none;
-    padding: 10px 15px;
+    border: 1px solid white;
+    padding: 10px;
     cursor: pointer;
     border-radius: 5px;
 }
 
-.btn-change {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
+.dropdown-menu {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
     border-radius: 5px;
+    overflow: hidden;
 }
 
-.btn-logout:hover {
-    background-color: darkred;
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: white;
+    text-align: left;
+    cursor: pointer;
 }
 
-.btn-change:hover {
-    background-color: #0056b3;
+.dropdown-menu button:hover {
+    background-color: #eee;
 }
 
 .error-message {
@@ -112,8 +119,7 @@ th {
     border: 1px solid #ddd;
 }
 
-/* ===================== */
-/* Estilos para dispositivos móviles (máximo 768px) */
+/* Responsive (max-width: 768px) */
 @media (max-width: 768px) {
     .dashboard-container {
         max-width: 100%;
@@ -126,36 +132,10 @@ th {
         padding: 10px;
     }
     
-    .header-buttons {
-        flex-direction: column;
-        width: 100%;
-        gap: 5px;
-        margin-top: 10px;
-    }
-    
-    .menu-container {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 10px;
-    }
-    
-    .dropdown-menu {
-        width: 100%;
-        text-align: left;
-        margin-top: 5px;
-    }
-    
     .filtros-container {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
-    }
-    
-    .filtros-container label {
-        width: 100%;
-        text-align: left;
     }
     
     table {
@@ -172,8 +152,7 @@ th {
     }
 }
 
-/* ===================== */
-/* Estilos para dispositivos muy pequeños (máximo 368px) */
+/* Responsive (max-width: 368px) */
 @media (max-width: 368px) {
     .dashboard-container {
         padding: 5px;
@@ -182,16 +161,6 @@ th {
     .dashboard-header {
         padding: 5px;
         font-size: 0.9rem;
-    }
-    
-    .header-buttons {
-        gap: 5px;
-    }
-    
-    .btn-logout,
-    .btn-change {
-        padding: 8px 10px;
-        font-size: 0.8rem;
     }
     
     .filtros-container {
