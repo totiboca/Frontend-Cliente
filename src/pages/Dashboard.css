@@ -1,8 +1,7 @@
-/* Color de texto base en azul oscuro */
+/* Aplica color de texto azul oscuro al body y contenedor principal */
 body,
 .dashboard-container {
     color: #0A1931;
-    font-family: Arial, sans-serif;
 }
 
 /* Encabezados h3 en azul oscuro */
@@ -10,27 +9,25 @@ h3 {
     color: #0A1931 !important;
 }
 
-/* Contenedor principal */
+/* Estilos base */
 .dashboard-container {
     max-width: 1000px;
     margin: auto;
     text-align: center;
     padding: 20px;
+    font-family: Arial, sans-serif;
 }
 
-/* Barra superior (header) */
 .dashboard-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Menú a la derecha, nombre a la izquierda */
     align-items: center;
     background-color: #0A1931;
     color: white;
     padding: 15px;
     border-radius: 5px;
-    margin-bottom: 20px;
 }
 
-/* Menú desplegable */
 .menu-container {
     position: relative;
 }
@@ -44,47 +41,59 @@ h3 {
     border-radius: 5px;
 }
 
-/* Dropdown menu */
-.dropdown-menu {
-    position: absolute;
-    top: 45px;
-    right: 0;
-    background-color: #0A1931; /* Fondo azul */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-    color: white; /* Texto blanco */
-    min-width: 140px;
-}
-
-.dropdown-menu button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: #0A1931; 
-    color: white;
-    text-align: left;
-    cursor: pointer;
-}
-
-.dropdown-menu button:hover {
-    background-color: #0A1931;
-    color: red;
-}
-
-/* Mensajes de error */
 .error-message {
     color: red;
 }
 
-/* Filtros */
+.movimientos-container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;                /* Ocupar todo el ancho */
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    /* Para que en móvil no se genere scroll horizontal */
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #0A1931;
+    color: white;
+}
+
+.totales-ruta {
+    background-color: #E0E0E0;
+    font-weight: bold;
+}
+
+.resumen-total {
+    margin-top: 30px;
+}
+
+.resumen-total table {
+    background-color: #0A1931;
+    color: white;
+}
+
+.resumen-total th, .resumen-total td {
+    border: 1px solid white;
+    padding: 10px;
+}
+
 .filtros-container {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Permite que los filtros se reorganicen en varias líneas */
 }
 
 .filtros-container label {
@@ -97,138 +106,124 @@ h3 {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
-    min-width: 120px; /* Evita que se encojan demasiado */
 }
 
-/* Sección de movimientos */
-.movimientos-container {
-    margin-top: 20px;
+.dropdown-menu {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: #0A1931; /* Fondo azul */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    color: white; /* Texto blanco */
 }
 
-/* Tablas (sin scroll horizontal, usando table-layout: fixed) */
-table {
+.dropdown-menu button {
+    display: block;
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background-color: white;
-    table-layout: fixed; /* Reparte el ancho entre las columnas */
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-    white-space: normal;     /* Permite que el texto salte de línea */
-    word-wrap: break-word;   /* Ajuste de texto en celdas */
-}
-
-th {
-    background-color: #0A1931;
-    color: white;
-}
-
-/* Fila de totales de cada ruta */
-.totales-ruta {
-    background-color: #E0E0E0;
-    font-weight: bold;
-}
-
-/* Resumen total */
-.resumen-total {
-    margin-top: 30px;
-}
-
-.resumen-total table {
-    background-color: #0A1931;
-    color: white;
-    border: 1px solid #ddd;
-    margin: 0 auto; /* Centra la tabla de resumen */
-}
-
-.resumen-total th,
-.resumen-total td {
-    border: 1px solid white;
     padding: 10px;
+    border: none;
+    background-color: #0A1931; /* Mismo color de fondo */
+    color: white; /* Texto blanco */
+    text-align: left;
+    cursor: pointer;
+}
+
+/* Cambia a rojo en hover */
+.dropdown-menu button:hover {
+    background-color: #0A1931;
+    color: red;
 }
 
 /* ===================== */
+/* SOLO MODIFICAMOS LAS MEDIA QUERIES */
+/* ===================== */
+
 /* Responsive (max-width: 768px) */
 @media (max-width: 768px) {
+    /* Ajustamos el contenedor a 100% */
     .dashboard-container {
         max-width: 100%;
         padding: 10px;
     }
-    
+
+    /* Mantener encabezado en una sola fila,
+       con el nombre a la izquierda y menú a la derecha */
     .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px;
+        flex-direction: row; 
+        align-items: center;
     }
-    
+
+    /* Para asegurar que el menú no se salga, 
+       dejamos el botón a la derecha */
     .menu-button {
-        margin-top: 10px;
+        margin-left: auto;
     }
-    
+
+    /* Filtros en columna, pero ajustados al ancho */
     .filtros-container {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-wrap: wrap;          /* Permite que bajen de línea si no hay espacio */
+        justify-content: flex-start; 
         gap: 10px;
     }
-    
+
+    /* Reducimos un poco la fuente en tablas para que quepa mejor */
     table {
         font-size: 0.85rem;
     }
-    
+
     th, td {
-        padding: 5px;
+        padding: 6px; /* Un poco menos de padding en móvil */
     }
-    
+
     .resumen-total th, 
     .resumen-total td {
-        padding: 5px;
+        padding: 6px;
         font-size: 0.85rem;
     }
 }
 
-/* ===================== */
 /* Responsive (max-width: 368px) */
 @media (max-width: 368px) {
+    /* Aún más ajuste en pantallas muy pequeñas */
     .dashboard-container {
         padding: 5px;
     }
-    
+
     .dashboard-header {
         padding: 5px;
         font-size: 0.9rem;
     }
-    
+
     .menu-button {
-        margin-top: 5px;
+        margin-left: auto;
         font-size: 0.8rem;
     }
-    
+
     .filtros-container {
         gap: 5px;
         margin-bottom: 10px;
     }
-    
+
     .filtros-container label,
     .filtros-container select,
     .filtros-container input {
         font-size: 0.8rem;
+        min-width: 100px; /* Ajuste para no romper */
     }
-    
+
     table {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
     }
-    
+
     th, td {
-        padding: 3px;
+        padding: 4px;
     }
-    
+
     .resumen-total th,
     .resumen-total td {
-        padding: 3px;
-        font-size: 0.7rem;
+        padding: 4px;
+        font-size: 0.75rem;
     }
 }
