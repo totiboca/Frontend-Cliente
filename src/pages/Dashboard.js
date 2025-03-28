@@ -218,7 +218,7 @@ const Dashboard = () => {
     const rutas = Object.keys(movs);
     if (rutas.length === 0) return <p>No hay rutas como Operador Logístico.</p>;
     return (
-      <div>
+        <div className="table-responsive">
         <h3>Resumen de Rutas (Operador Logístico)</h3>
         <table>
           <thead>
