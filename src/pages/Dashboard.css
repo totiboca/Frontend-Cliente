@@ -166,4 +166,69 @@ th {
     }
     
     .menu-button {
-        margin
+        margin-top: 10px;
+    }
+    
+    .filtros-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    table {
+        font-size: 0.85rem;
+    }
+    
+    th, td {
+        padding: 5px;
+    }
+    
+    .resumen-total th, 
+    .resumen-total td {
+        padding: 5px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ===================== */
+/* Responsive (max-width: 368px) */
+@media (max-width: 368px) {
+    .dashboard-container {
+        padding: 5px;
+    }
+    
+    .dashboard-header {
+        padding: 5px;
+        font-size: 0.9rem;
+    }
+    
+    .menu-button {
+        margin-top: 5px;
+        font-size: 0.8rem;
+    }
+    
+    .filtros-container {
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .filtros-container label,
+    .filtros-container select,
+    .filtros-container input {
+        font-size: 0.8rem;
+    }
+    
+    table {
+        font-size: 0.7rem;
+    }
+    
+    th, td {
+        padding: 3px;
+    }
+    
+    .resumen-total th,
+    .resumen-total td {
+        padding: 3px;
+        font-size: 0.7rem;
+    }
+}
