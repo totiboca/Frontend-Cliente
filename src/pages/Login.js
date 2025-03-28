@@ -51,7 +51,7 @@ const Login = () => {
                 {registro && (
                     <input 
                         type="text" 
-                        placeholder="ID Cliente" 
+                        placeholder="CUIT" 
                         value={idCliente} 
                         onChange={(e) => setIdCliente(e.target.value)} 
                         required 
@@ -59,7 +59,7 @@ const Login = () => {
                 )}
                 <input 
                     type="text" 
-                    placeholder="Usuario" 
+                    placeholder="Mail" 
                     value={usuario} 
                     onChange={(e) => setUsuario(e.target.value)} 
                     required 

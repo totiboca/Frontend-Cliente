@@ -319,9 +319,23 @@ const Dashboard = () => {
           </label>
         )}
       </div>
+      
+      
 
-      {/* Resumen Total */}
-      <div className="resumen-total">
+      {/* Mostrar movimientos según tipo de usuario */}
+      {tipoUsuario === "Cliente" && (
+        <VistaCliente movs={movimientosFiltrados} />
+      )}
+      {tipoUsuario === "Operador Logistico" && (
+        <VistaOperadorLogistico movs={movimientosFiltrados} />
+      )}
+      {tipoUsuario === "Ambos" && (
+        <VistaAmbos movs={movimientosFiltrados} idCliente={usuario?.id_cliente} />
+      )}
+      {!tipoUsuario && <p>No hay movimientos registrados.</p>}
+
+     {/* Resumen Total */}
+     <div className="resumen-total">
         <h3>Resumen Total</h3>
         <table>
           <thead>
@@ -341,17 +355,7 @@ const Dashboard = () => {
         </table>
       </div>
 
-      {/* Mostrar movimientos según tipo de usuario */}
-      {tipoUsuario === "Cliente" && (
-        <VistaCliente movs={movimientosFiltrados} />
-      )}
-      {tipoUsuario === "Operador Logistico" && (
-        <VistaOperadorLogistico movs={movimientosFiltrados} />
-      )}
-      {tipoUsuario === "Ambos" && (
-        <VistaAmbos movs={movimientosFiltrados} idCliente={usuario?.id_cliente} />
-      )}
-      {!tipoUsuario && <p>No hay movimientos registrados.</p>}
+
     </div>
   );
 };
