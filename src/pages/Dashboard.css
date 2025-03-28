@@ -1,7 +1,7 @@
-/* Colores y tipografía base */
+/* Color de texto base en azul oscuro */
 body,
 .dashboard-container {
-    color: #0A1931; /* Azul oscuro */
+    color: #0A1931;
     font-family: Arial, sans-serif;
 }
 
@@ -18,7 +18,7 @@ h3 {
     padding: 20px;
 }
 
-/* Encabezado (barra superior) */
+/* Barra superior (header) */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -27,10 +27,10 @@ h3 {
     color: white;
     padding: 15px;
     border-radius: 5px;
-    margin-bottom: 20px; /* Espacio debajo del header */
+    margin-bottom: 20px;
 }
 
-/* Menú de usuario */
+/* Menú desplegable */
 .menu-container {
     position: relative;
 }
@@ -44,13 +44,47 @@ h3 {
     border-radius: 5px;
 }
 
+/* Dropdown menu */
+.dropdown-menu {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: #0A1931; /* Fondo azul */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    color: white; /* Texto blanco */
+    min-width: 140px;
+}
+
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #0A1931; 
+    color: white;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+    background-color: #0A1931;
+    color: red;
+}
+
+/* Mensajes de error */
+.error-message {
+    color: red;
+}
+
 /* Filtros */
 .filtros-container {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Permite que los filtros bajen de línea */
+    flex-wrap: wrap; /* Permite que los filtros se reorganicen en varias líneas */
 }
 
 .filtros-container label {
@@ -63,36 +97,29 @@ h3 {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
-    min-width: 130px; /* Para que no se encojan demasiado */
+    min-width: 120px; /* Evita que se encojan demasiado */
 }
 
-/* Mensajes de error */
-.error-message {
-    color: red;
+/* Sección de movimientos */
+.movimientos-container {
+    margin-top: 20px;
 }
 
-/* Contenedor para la tabla, con scroll horizontal si es necesario */
-.table-responsive {
-    width: 100%;
-    overflow-x: auto; /* Scroll horizontal si la tabla es muy ancha */
-    margin-top: 15px;
-}
-
-/* Estilos de la tabla */
+/* Tablas (sin scroll horizontal, usando table-layout: fixed) */
 table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    min-width: 600px; /* Opcional: para que no se colapse demasiado en pantallas chicas */
+    margin-top: 15px;
+    background-color: white;
+    table-layout: fixed; /* Reparte el ancho entre las columnas */
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
-    white-space: nowrap;       /* Para evitar quiebres extraños */
-    overflow: hidden;          /* Para el scroll horizontal */
-    text-overflow: ellipsis;   /* Muestra ... si el texto es muy largo */
+    white-space: normal;     /* Permite que el texto salte de línea */
+    word-wrap: break-word;   /* Ajuste de texto en celdas */
 }
 
 th {
@@ -100,12 +127,13 @@ th {
     color: white;
 }
 
+/* Fila de totales de cada ruta */
 .totales-ruta {
     background-color: #E0E0E0;
     font-weight: bold;
 }
 
-/* Sección de resumen total */
+/* Resumen total */
 .resumen-total {
     margin-top: 30px;
 }
@@ -114,48 +142,13 @@ th {
     background-color: #0A1931;
     color: white;
     border: 1px solid #ddd;
-    margin: 0 auto; /* Centrar la tabla */
+    margin: 0 auto; /* Centra la tabla de resumen */
 }
 
 .resumen-total th,
 .resumen-total td {
     border: 1px solid white;
     padding: 10px;
-}
-
-/* Menú desplegable */
-.dropdown-menu {
-    position: absolute;
-    top: 45px;
-    right: 0;
-    background-color: #0A1931; /* Fondo azul */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-    color: white; /* Texto blanco */
-    min-width: 150px; /* Para que no se vea demasiado estrecho */
-}
-
-.dropdown-menu button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: #0A1931; /* Mismo color de fondo */
-    color: white; /* Texto blanco */
-    text-align: left;
-    cursor: pointer;
-}
-
-/* Cambia a rojo en hover */
-.dropdown-menu button:hover {
-    background-color: #0A1931;
-    color: red;
-}
-
-/* Movimientos container */
-.movimientos-container {
-    margin-top: 20px;
 }
 
 /* ===================== */
@@ -171,72 +164,6 @@ th {
         align-items: flex-start;
         padding: 10px;
     }
-
-    .menu-button {
-        margin-top: 10px;
-    }
-    
-    .filtros-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    table {
-        font-size: 0.85rem;
-    }
-    
-    th, td {
-        padding: 5px;
-    }
-    
-    .resumen-total th, 
-    .resumen-total td {
-        padding: 5px;
-        font-size: 0.85rem;
-    }
-}
-
-/* ===================== */
-/* Responsive (max-width: 368px) */
-@media (max-width: 368px) {
-    .dashboard-container {
-        padding: 5px;
-    }
-    
-    .dashboard-header {
-        padding: 5px;
-        font-size: 0.9rem;
-    }
     
     .menu-button {
-        margin-top: 5px;
-        font-size: 0.8rem;
-    }
-
-    .filtros-container {
-        gap: 5px;
-        margin-bottom: 10px;
-    }
-    
-    .filtros-container label,
-    .filtros-container select,
-    .filtros-container input {
-        font-size: 0.8rem;
-    }
-    
-    table {
-        font-size: 0.7rem;
-        min-width: 500px; /* Aún mantenemos un ancho mínimo */
-    }
-    
-    th, td {
-        padding: 3px;
-    }
-    
-    .resumen-total th,
-    .resumen-total td {
-        padding: 3px;
-        font-size: 0.7rem;
-    }
-}
+        margin
