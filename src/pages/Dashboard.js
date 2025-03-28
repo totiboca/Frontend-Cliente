@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../utils/api";  // Tu archivo para hacer peticiones al backend
+import API from "../utils/api";
 import "./Dashboard.css";
 
-function Dashboard() {
+const Dashboard = () => {
   const navigate = useNavigate();
-
-  // Estados
+  
+  // Estados generales
   const [movimientos, setMovimientos] = useState({});
   const [error, setError] = useState("");
   const [filtroRuta, setFiltroRuta] = useState("Todas");
   const [filtroFechaInicio, setFiltroFechaInicio] = useState("");
   const [filtroFechaFin, setFiltroFechaFin] = useState("");
-  const [menuAbierto, setMenuAbierto] = useState(false);
   const [filtroMes, setFiltroMes] = useState("");
+  const [menuAbierto, setMenuAbierto] = useState(false);
   const [nombreCliente, setNombreCliente] = useState("");
   const [usuario, setUsuario] = useState(null);
+
+  // Estado para el filtro "Tipo" cuando el usuario es "Ambos"
+  const [filtroTipo, setFiltroTipo] = useState("Cliente"); // valores: "Cliente" o "Operador Logístico"
 
   // Obtener perfil
   useEffect(() => {
@@ -24,7 +27,7 @@ function Dashboard() {
         const response = await API.get("/auth/perfil", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setUsuario(response.data);        // { id_cliente, tipo, nombre, ... }
+        setUsuario(response.data); // debe incluir: { id_cliente, tipo, nombre, ... }
         setNombreCliente(response.data.nombre);
       } catch (error) {
         console.error("Error obteniendo perfil:", error);
@@ -40,7 +43,6 @@ function Dashboard() {
         const response = await API.get("/clientes/movimientos", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        // { movimientos: { id_ruta: { nombre_ruta, datos: [...] } } }
         setMovimientos(response.data?.movimientos || {});
       } catch (err) {
         setError("Error al obtener datos");
@@ -58,38 +60,26 @@ function Dashboard() {
     navigate("/cambiar-clave");
   };
 
-  // =======================
-  // Filtro de movimientos
-  // =======================
+  // Función de filtrado de movimientos según fechas y ruta
   const filtrarMovimientos = (movs) => {
     if (!movs) return {};
-
-    // Recorremos todas las rutas
     const rutasFiltradas = {};
     Object.keys(movs).forEach((id_ruta) => {
       const { nombre_ruta, datos } = movs[id_ruta];
-      // Filtramos 'datos' según fecha y mes
       const datosFiltrados = datos.filter((mov) => {
         const fechaMov = new Date(`${mov.fecha}T12:00:00Z`);
         const inicio = filtroFechaInicio ? new Date(filtroFechaInicio) : null;
         const fin = filtroFechaFin ? new Date(filtroFechaFin) : null;
-
-        // Mes y año del movimiento
-        const mesMov = fechaMov.getMonth() + 1; // 0-based
+        const mesMov = fechaMov.getMonth() + 1;
         const añoMov = fechaMov.getFullYear();
-
-        // Si el filtroMes es "YYYY-MM", extraemos año y mes
         let mesFiltro = filtroMes ? parseInt(filtroMes.split("-")[1]) : null;
         let añoFiltro = filtroMes ? parseInt(filtroMes.split("-")[0]) : null;
-
         return (
           (!inicio || fechaMov >= inicio) &&
           (!fin || fechaMov <= fin) &&
           (!filtroMes || (mesMov === mesFiltro && añoMov === añoFiltro))
         );
       });
-
-      // Filtramos también por ruta
       if ((filtroRuta === "Todas" || filtroRuta === id_ruta) && datosFiltrados.length > 0) {
         rutasFiltradas[id_ruta] = {
           nombre_ruta,
@@ -97,30 +87,22 @@ function Dashboard() {
         };
       }
     });
-
     return rutasFiltradas;
   };
 
-  // =======================
-  // Cálculos de Totales
-  // =======================
+  // Totales globales
   const movimientosFiltrados = filtrarMovimientos(movimientos);
-
   const totalCargaGlobal = Object.values(movimientosFiltrados).reduce(
     (acc, ruta) => acc + ruta.datos.reduce((sum, mov) => sum + mov.lleva, 0),
     0
   );
-
   const totalDevolucionGlobal = Object.values(movimientosFiltrados).reduce(
     (acc, ruta) => acc + ruta.datos.reduce((sum, mov) => sum + mov.trae, 0),
     0
   );
-
   const saldoGlobal = totalCargaGlobal - totalDevolucionGlobal;
 
-  // =======================
-  // Helpers de visualización
-  // =======================
+  // Helper para calcular totales por ruta
   function calcularTotales(datos) {
     let totalCarga = 0;
     let totalDevolucion = 0;
@@ -128,31 +110,20 @@ function Dashboard() {
       totalCarga += mov.lleva;
       totalDevolucion += mov.trae;
     });
-    return {
-      totalCarga,
-      totalDevolucion,
-      saldo: totalCarga - totalDevolucion
-    };
+    return { totalCarga, totalDevolucion, saldo: totalCarga - totalDevolucion };
   }
 
-  // =======================
-  // Vistas de cada Tipo
-  // =======================
-  // 1) VISTA CLIENTE
+  // Vista para Cliente normal
   function VistaCliente({ movs }) {
-    // movs es un objeto { id_ruta: { nombre_ruta, datos: [...] } }
-    if (Object.keys(movs).length === 0) {
-      return <p>No hay movimientos para mostrar.</p>;
-    }
+    if (Object.keys(movs).length === 0) return <p>No hay movimientos para mostrar.</p>;
     return (
       <div className="movimientos-container">
         {Object.keys(movs).map((id_ruta) => {
           let totalCargaRuta = 0;
           let totalDevolucionRuta = 0;
-
           return (
             <div key={id_ruta}>
-              <h3>Ruta: {id_ruta}</h3>
+              <h3>Ruta: {id_ruta} - {movs[id_ruta].nombre_ruta}</h3>
               <table>
                 <thead>
                   <tr>
@@ -190,13 +161,10 @@ function Dashboard() {
     );
   }
 
-  // 2) VISTA OPERADOR LOGISTICO
+  // Vista para Operador Logístico
   function VistaOperadorLogistico({ movs }) {
-    // movs es un objeto { id_ruta: { nombre_ruta, datos: [...] } }
     const [rutaSeleccionada, setRutaSeleccionada] = useState(null);
-
     if (rutaSeleccionada) {
-      // Mostramos el detalle de la ruta
       const { nombre_ruta, datos } = movs[rutaSeleccionada];
       return (
         <div>
@@ -225,13 +193,8 @@ function Dashboard() {
         </div>
       );
     }
-
-    // Mostrar tabla de rutas con Totales y botón "Ver Detalle"
     const rutas = Object.keys(movs);
-    if (rutas.length === 0) {
-      return <p>No hay rutas como Operador Logístico.</p>;
-    }
-
+    if (rutas.length === 0) return <p>No hay rutas como Operador Logístico.</p>;
     return (
       <div>
         <h3>Resumen de Rutas (Operador Logístico)</h3>
@@ -250,7 +213,6 @@ function Dashboard() {
             {rutas.map((id_ruta) => {
               const { nombre_ruta, datos } = movs[id_ruta];
               const { totalCarga, totalDevolucion, saldo } = calcularTotales(datos);
-
               return (
                 <tr key={id_ruta}>
                   <td>{id_ruta}</td>
@@ -270,69 +232,42 @@ function Dashboard() {
     );
   }
 
-  // 3) VISTA AMBOS
-  // Separamos las rutas donde el usuario es "cliente" de las rutas donde es "fletero"
-  function separarMovsAmbos(movs, idCliente) {
-    const movsCliente = {};
-    const movsFletero = {};
-
-    Object.keys(movs).forEach((id_ruta) => {
-      const { nombre_ruta, datos } = movs[id_ruta];
-      if (datos.length === 0) return;
-
-      // Miramos el primer registro para saber a quién pertenece la ruta
-      const primerMov = datos[0];
-      const idClienteRuta = primerMov.id_cliente_ruta; // del backend
-      const idFleteroRuta = primerMov.id_fletero_ruta; // del backend
-
-      // Si la ruta pertenece a este usuario como cliente
-      if (idClienteRuta === idCliente) {
-        if (!movsCliente[id_ruta]) {
-          movsCliente[id_ruta] = { nombre_ruta, datos: [] };
-        }
-        movsCliente[id_ruta].datos = datos;
-      }
-
-      // Si la ruta pertenece a este usuario como fletero
-      if (idFleteroRuta === idCliente) {
-        if (!movsFletero[id_ruta]) {
-          movsFletero[id_ruta] = { nombre_ruta, datos: [] };
-        }
-        movsFletero[id_ruta].datos = datos;
-      }
-    });
-
-    return { movsCliente, movsFletero };
-  }
-
+  // Vista para usuarios de tipo Ambos, con filtro "Tipo"
   function VistaAmbos({ movs, idCliente }) {
-    // Separamos en dos conjuntos
-    const { movsCliente, movsFletero } = separarMovsAmbos(movs, idCliente);
-
-    return (
-      <div style={{ display: "flex", gap: "20px" }}>
-        <div style={{ flex: 1 }}>
-          <h2>Mis Rutas (como Cliente)</h2>
-          <VistaCliente movs={movsCliente} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <h2>Rutas como Operador Logístico</h2>
-          <VistaOperadorLogistico movs={movsFletero} />
-        </div>
-      </div>
-    );
+    // Usamos el filtro filtroTipo para decidir qué vista mostrar
+    if (filtroTipo === "Cliente") {
+      // Filtramos movimientos donde el usuario es cliente
+      const movsCliente = {};
+      Object.keys(movs).forEach((id_ruta) => {
+        const { nombre_ruta, datos } = movs[id_ruta];
+        // Revisamos el primer movimiento (se asume que toda la ruta es consistente)
+        if (datos[0].id_cliente_ruta === idCliente) {
+          movsCliente[id_ruta] = { nombre_ruta, datos };
+        }
+      });
+      return <VistaCliente movs={movsCliente} />;
+    } else if (filtroTipo === "Operador Logístico") {
+      // Filtramos movimientos donde el usuario es operador logístico
+      const movsFletero = {};
+      Object.keys(movs).forEach((id_ruta) => {
+        const { nombre_ruta, datos } = movs[id_ruta];
+        if (datos[0].id_fletero_ruta === idCliente) {
+          movsFletero[id_ruta] = { nombre_ruta, datos };
+        }
+      });
+      return <VistaOperadorLogistico movs={movsFletero} />;
+    } else {
+      return <p>Tipo no definido.</p>;
+    }
   }
 
-  // =======================
   // Render principal
-  // =======================
   const tipoUsuario = usuario?.tipo; // "Cliente", "Operador Logistico", "Ambos"
-
   return (
     <div className="dashboard-container">
       {/* Encabezado */}
       <div className="dashboard-header">
-        <h2 style={{ color: "white" }}>{nombreCliente || "Dashboard"}</h2>
+        <h2>{nombreCliente || "Dashboard"}</h2>
         <div className="menu-container">
           <button className="menu-button" onClick={() => setMenuAbierto(!menuAbierto)}>
             ☰ Menú
@@ -348,7 +283,7 @@ function Dashboard() {
 
       {error && <p className="error-message">{error}</p>}
 
-      {/* Filtros */}
+      {/* Filtros generales */}
       <div className="filtros-container">
         <label>
           Rutas:
@@ -363,28 +298,26 @@ function Dashboard() {
         </label>
         <label>
           Fecha inicio:
-          <input
-            type="date"
-            value={filtroFechaInicio}
-            onChange={(e) => setFiltroFechaInicio(e.target.value)}
-          />
+          <input type="date" value={filtroFechaInicio} onChange={(e) => setFiltroFechaInicio(e.target.value)} />
         </label>
         <label>
           Fecha fin:
-          <input
-            type="date"
-            value={filtroFechaFin}
-            onChange={(e) => setFiltroFechaFin(e.target.value)}
-          />
+          <input type="date" value={filtroFechaFin} onChange={(e) => setFiltroFechaFin(e.target.value)} />
         </label>
         <label>
           Filtrar por mes:
-          <input
-            type="month"
-            value={filtroMes}
-            onChange={(e) => setFiltroMes(e.target.value)}
-          />
+          <input type="month" value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)} />
         </label>
+        {/* Filtro extra para tipo en "Ambos" */}
+        {tipoUsuario === "Ambos" && (
+          <label>
+            Tipo:
+            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
+              <option value="Cliente">Cliente</option>
+              <option value="Operador Logístico">Operador Logístico</option>
+            </select>
+          </label>
+        )}
       </div>
 
       {/* Resumen Total */}
@@ -408,7 +341,7 @@ function Dashboard() {
         </table>
       </div>
 
-      {/* Mostrar según tipo de usuario */}
+      {/* Mostrar movimientos según tipo de usuario */}
       {tipoUsuario === "Cliente" && (
         <VistaCliente movs={movimientosFiltrados} />
       )}
@@ -418,11 +351,9 @@ function Dashboard() {
       {tipoUsuario === "Ambos" && (
         <VistaAmbos movs={movimientosFiltrados} idCliente={usuario?.id_cliente} />
       )}
-
-      {/* Si no hay tipo o no hay movimientos */}
       {!tipoUsuario && <p>No hay movimientos registrados.</p>}
     </div>
   );
-}
+};
 
 export default Dashboard;

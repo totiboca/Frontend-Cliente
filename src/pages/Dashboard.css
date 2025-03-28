@@ -1,3 +1,9 @@
+/* Aplica color de texto azul oscuro al body y contenedor principal */
+body,
+.dashboard-container {
+    color: #0A1931;
+}
+
 /* Estilos base */
 .dashboard-container {
     max-width: 1000px;
@@ -29,30 +35,6 @@
     padding: 10px;
     cursor: pointer;
     border-radius: 5px;
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 45px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.dropdown-menu button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: white;
-    text-align: left;
-    cursor: pointer;
-}
-
-.dropdown-menu button:hover {
-    background-color: #eee;
 }
 
 .error-message {
@@ -117,6 +99,34 @@ th {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: #0A1931; /* Fondo azul */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    color: white; /* Texto blanco */
+}
+
+.dropdown-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #0A1931; /* Mismo color de fondo */
+    color: white; /* Texto blanco */
+    text-align: left;
+    cursor: pointer;
+}
+
+/* Cambia a rojo en hover */
+.dropdown-menu button:hover {
+    background-color: #0A1931;
+    color: red;
 }
 
 /* Responsive (max-width: 768px) */
@@ -188,3 +198,4 @@ th {
         font-size: 0.7rem;
     }
 }
+
