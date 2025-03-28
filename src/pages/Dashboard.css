@@ -4,6 +4,11 @@ body,
     color: #0A1931;
 }
 
+/* Encabezados h3 en azul oscuro */
+h3 {
+    color: #0A1931 !important;
+}
+
 /* Estilos base */
 .dashboard-container {
     max-width: 1000px;

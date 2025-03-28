@@ -5,7 +5,7 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  
+
   // Estados generales
   const [movimientos, setMovimientos] = useState({});
   const [error, setError] = useState("");
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [usuario, setUsuario] = useState(null);
 
   // Estado para el filtro "Tipo" cuando el usuario es "Ambos"
-  const [filtroTipo, setFiltroTipo] = useState("Cliente"); // valores: "Cliente" o "Operador Logístico"
+  const [filtroTipo, setFiltroTipo] = useState("Cliente"); // "Cliente" o "Operador Logístico"
 
   // Obtener perfil
   useEffect(() => {
@@ -27,7 +27,7 @@ const Dashboard = () => {
         const response = await API.get("/auth/perfil", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setUsuario(response.data); // debe incluir: { id_cliente, tipo, nombre, ... }
+        setUsuario(response.data); // Debe incluir: { id_cliente, tipo, nombre, ... }
         setNombreCliente(response.data.nombre);
       } catch (error) {
         console.error("Error obteniendo perfil:", error);
@@ -43,6 +43,8 @@ const Dashboard = () => {
         const response = await API.get("/clientes/movimientos", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
+        // Se espera que response.data.movimientos tenga la forma:
+        // { [id_ruta]: { nombre_ruta, datos: [ { fecha, lleva, trae, id_cliente_ruta, id_fletero_ruta }, ... ] } }
         setMovimientos(response.data?.movimientos || {});
       } catch (err) {
         setError("Error al obtener datos");
@@ -60,7 +62,9 @@ const Dashboard = () => {
     navigate("/cambiar-clave");
   };
 
-  // Función de filtrado de movimientos según fechas y ruta
+  // =======================
+  // Filtrado de movimientos
+  // =======================
   const filtrarMovimientos = (movs) => {
     if (!movs) return {};
     const rutasFiltradas = {};
@@ -90,28 +94,46 @@ const Dashboard = () => {
     return rutasFiltradas;
   };
 
-  // Totales globales
   const movimientosFiltrados = filtrarMovimientos(movimientos);
-  const totalCargaGlobal = Object.values(movimientosFiltrados).reduce(
-    (acc, ruta) => acc + ruta.datos.reduce((sum, mov) => sum + mov.lleva, 0),
-    0
-  );
-  const totalDevolucionGlobal = Object.values(movimientosFiltrados).reduce(
-    (acc, ruta) => acc + ruta.datos.reduce((sum, mov) => sum + mov.trae, 0),
-    0
-  );
-  const saldoGlobal = totalCargaGlobal - totalDevolucionGlobal;
 
-  // Helper para calcular totales por ruta
-  function calcularTotales(datos) {
+  // =======================
+  // Función para calcular totales a partir de un objeto de movimientos
+  // =======================
+  const calcularTotalesDeMovs = (movsObj) => {
     let totalCarga = 0;
     let totalDevolucion = 0;
-    datos.forEach((mov) => {
-      totalCarga += mov.lleva;
-      totalDevolucion += mov.trae;
+    Object.values(movsObj).forEach((ruta) => {
+      ruta.datos.forEach((mov) => {
+        totalCarga += mov.lleva;
+        totalDevolucion += mov.trae;
+      });
     });
     return { totalCarga, totalDevolucion, saldo: totalCarga - totalDevolucion };
+  };
+
+  // Para usuarios "Ambos", si se filtra por Tipo, se recalcula el resumen
+  let resumen = { totalCarga: 0, totalDevolucion: 0, saldo: 0 };
+  if (usuario && usuario.tipo === "Ambos") {
+    // Filtrar según filtroTipo
+    const movsFiltradosPorTipo = {};
+    Object.keys(movimientosFiltrados).forEach((id_ruta) => {
+      const { nombre_ruta, datos } = movimientosFiltrados[id_ruta];
+      if (datos.length === 0) return;
+      if (filtroTipo === "Cliente" && datos[0].id_cliente_ruta === usuario.id_cliente) {
+        movsFiltradosPorTipo[id_ruta] = { nombre_ruta, datos };
+      }
+      if (filtroTipo === "Operador Logístico" && datos[0].id_fletero_ruta === usuario.id_cliente) {
+        movsFiltradosPorTipo[id_ruta] = { nombre_ruta, datos };
+      }
+    });
+    resumen = calcularTotalesDeMovs(movsFiltradosPorTipo);
+  } else {
+    resumen = calcularTotalesDeMovs(movimientosFiltrados);
   }
+
+  // =======================
+  // Vistas
+  // =======================
 
   // Vista para Cliente normal
   function VistaCliente({ movs }) {
@@ -212,7 +234,7 @@ const Dashboard = () => {
           <tbody>
             {rutas.map((id_ruta) => {
               const { nombre_ruta, datos } = movs[id_ruta];
-              const { totalCarga, totalDevolucion, saldo } = calcularTotales(datos);
+              const { totalCarga, totalDevolucion, saldo } = calcularTotalesDeMovs({ [id_ruta]: { datos } });
               return (
                 <tr key={id_ruta}>
                   <td>{id_ruta}</td>
@@ -232,22 +254,20 @@ const Dashboard = () => {
     );
   }
 
-  // Vista para usuarios de tipo Ambos, con filtro "Tipo"
+  // Vista para usuarios de tipo Ambos, usando el filtro "Tipo"
   function VistaAmbos({ movs, idCliente }) {
-    // Usamos el filtro filtroTipo para decidir qué vista mostrar
     if (filtroTipo === "Cliente") {
-      // Filtramos movimientos donde el usuario es cliente
+      // Filtrar movimientos donde el usuario es cliente
       const movsCliente = {};
       Object.keys(movs).forEach((id_ruta) => {
         const { nombre_ruta, datos } = movs[id_ruta];
-        // Revisamos el primer movimiento (se asume que toda la ruta es consistente)
         if (datos[0].id_cliente_ruta === idCliente) {
           movsCliente[id_ruta] = { nombre_ruta, datos };
         }
       });
       return <VistaCliente movs={movsCliente} />;
     } else if (filtroTipo === "Operador Logístico") {
-      // Filtramos movimientos donde el usuario es operador logístico
+      // Filtrar movimientos donde el usuario es operador logístico
       const movsFletero = {};
       Object.keys(movs).forEach((id_ruta) => {
         const { nombre_ruta, datos } = movs[id_ruta];
@@ -262,7 +282,8 @@ const Dashboard = () => {
   }
 
   // Render principal
-  const tipoUsuario = usuario?.tipo; // "Cliente", "Operador Logistico", "Ambos"
+  const tipoUsuario = usuario?.tipo; // "Cliente", "Operador Logistico" o "Ambos"
+
   return (
     <div className="dashboard-container">
       {/* Encabezado */}
@@ -308,7 +329,7 @@ const Dashboard = () => {
           Filtrar por mes:
           <input type="month" value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)} />
         </label>
-        {/* Filtro extra para tipo en "Ambos" */}
+        {/* Filtro extra para "Ambos" */}
         {tipoUsuario === "Ambos" && (
           <label>
             Tipo:
@@ -319,23 +340,9 @@ const Dashboard = () => {
           </label>
         )}
       </div>
-      
-      
 
-      {/* Mostrar movimientos según tipo de usuario */}
-      {tipoUsuario === "Cliente" && (
-        <VistaCliente movs={movimientosFiltrados} />
-      )}
-      {tipoUsuario === "Operador Logistico" && (
-        <VistaOperadorLogistico movs={movimientosFiltrados} />
-      )}
-      {tipoUsuario === "Ambos" && (
-        <VistaAmbos movs={movimientosFiltrados} idCliente={usuario?.id_cliente} />
-      )}
-      {!tipoUsuario && <p>No hay movimientos registrados.</p>}
-
-     {/* Resumen Total */}
-     <div className="resumen-total">
+      {/* Resumen Total */}
+      <div className="resumen-total">
         <h3>Resumen Total</h3>
         <table>
           <thead>
@@ -347,15 +354,19 @@ const Dashboard = () => {
           </thead>
           <tbody>
             <tr>
-              <td><strong>{totalCargaGlobal}</strong></td>
-              <td><strong>{totalDevolucionGlobal}</strong></td>
-              <td><strong>{saldoGlobal}</strong></td>
+              <td><strong>{resumen.totalCarga}</strong></td>
+              <td><strong>{resumen.totalDevolucion}</strong></td>
+              <td><strong>{resumen.saldo}</strong></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-
+      {/* Mostrar movimientos según tipo */}
+      {tipoUsuario === "Cliente" && <VistaCliente movs={movimientosFiltrados} />}
+      {tipoUsuario === "Operador Logistico" && <VistaOperadorLogistico movs={movimientosFiltrados} />}
+      {tipoUsuario === "Ambos" && <VistaAmbos movs={movimientosFiltrados} idCliente={usuario?.id_cliente} />}
+      {!tipoUsuario && <p>No hay movimientos registrados.</p>}
     </div>
   );
 };
